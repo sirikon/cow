@@ -5,13 +5,6 @@
     "context": "../",
     "target": "vscode-dev-container"
   },
-  "mounts": [
-    {
-      "source": "${localWorkspaceFolder}/src/cow/src",
-      "target": "/app/src",
-      "type": "bind"
-    }
-  ],
   "customizations": {
     "vscode": {
       "extensions": [
