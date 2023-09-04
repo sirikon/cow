@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim AS builder
+FROM debian:bookworm-slim AS docker-downloader
 WORKDIR /builder
 RUN apt-get update && apt-get install -y wget
 
@@ -14,12 +14,14 @@ RUN wget https://github.com/docker/compose/releases/download/v2.20.3/docker-comp
 RUN sha256sum -c docker-compose.sha256
 RUN chmod +x docker-compose-linux-x86_64
 
+
+
 FROM python:3.11-slim-bookworm as base
 COPY ./src/cow/requirements.txt /app/requirements.txt
 RUN pip install -r /app/requirements.txt
 
-COPY --from=builder /builder/docker/docker /usr/local/bin/docker
-COPY --from=builder /builder/docker-compose-linux-x86_64 /usr/local/lib/docker/cli-plugins/docker-compose
+COPY --from=docker-downloader /builder/docker/docker /usr/local/bin/docker
+COPY --from=docker-downloader /builder/docker-compose-linux-x86_64 /usr/local/lib/docker/cli-plugins/docker-compose
 
 FROM base AS vscode-dev-container
 
