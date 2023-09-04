@@ -23,6 +23,8 @@ EXPOSE 80
 COPY --from=builder /builder/docker/docker /usr/local/bin/docker
 COPY --from=builder /builder/docker-compose-linux-x86_64 /usr/local/lib/docker/cli-plugins/docker-compose
 
+FROM base AS vscode-dev-container
+
 FROM base AS release
 COPY ./src/cow/src /app/src
 CMD ["flask", "--app", "cow.__main__", "run", "--host", "0.0.0.0", "--port", "80"]
