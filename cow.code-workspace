@@ -1,0 +1,36 @@
+{
+  "folders": [
+    {
+      "name": "Root",
+      "path": "."
+    },
+    {
+      "name": "Docker Image",
+      "path": "./src/docker-image"
+    }
+  ],
+  "settings": {
+    "editor.detectIndentation": false,
+    "editor.tabSize": 2,
+    "[json]": {
+      "editor.defaultFormatter": "vscode.json-language-features",
+      "files.insertFinalNewline": true
+    },
+    "[jsonc]": {
+      "editor.defaultFormatter": "vscode.json-language-features",
+      "files.insertFinalNewline": true
+    },
+    "[dockerfile]": {
+      "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+    },
+    "[yaml]": {
+      "editor.defaultFormatter": "redhat.vscode-yaml"
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "redhat.vscode-yaml",
+      "ms-azuretools.vscode-docker"
+    ]
+  }
+}
