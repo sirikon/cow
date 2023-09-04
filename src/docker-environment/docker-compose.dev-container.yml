@@ -1,0 +1,7 @@
+services:
+  cow:
+    build:
+      target: vscode-dev-container
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ../../:/workspace

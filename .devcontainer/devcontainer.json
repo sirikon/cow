@@ -1,17 +1,13 @@
 {
   "name": "Cow",
-  "build": {
-    "dockerfile": "../src/docker-image/Dockerfile",
-    "context": "../",
-    "target": "vscode-dev-container"
-  },
-  "mounts": [
-    {
-      "source": "/var/run/docker.sock",
-      "target": "/var/run/docker.sock",
-      "type": "bind"
-    }
+  "dockerComposeFile": [
+    "../src/docker-environment/docker-compose.yml",
+    "../src/docker-environment/docker-compose.build.yml",
+    "../src/docker-environment/docker-compose.dev-container.yml"
   ],
+  "service": "cow",
+  "overrideCommand": true,
+  "workspaceFolder": "/workspace",
   "customizations": {
     "vscode": {
       "extensions": [

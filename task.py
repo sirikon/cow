@@ -25,7 +25,7 @@ def cli():
 
 
 def dev_compose(*args, **kwargs):
-    compose(["build", "dev"], *args, env=dict(environ, COW_VERSION="dev"), **kwargs)
+    compose(["build", "dev"], *args, **kwargs)
 
 
 def compose(variants: list[str], *args, **kwargs):
