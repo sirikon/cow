@@ -5,8 +5,16 @@
       "path": "."
     },
     {
+      "name": "Cow",
+      "path": "./src/cow"
+    },
+    {
       "name": "Docker Image",
       "path": "./src/docker-image"
+    },
+    {
+      "name": "Docker Environment",
+      "path": "./src/docker-environment"
     }
   ],
   "settings": {
@@ -25,12 +33,17 @@
     },
     "[yaml]": {
       "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "[python]": {
+      "editor.defaultFormatter": "ms-python.black-formatter",
+      "editor.tabSize": 4,
     }
   },
   "extensions": {
     "recommendations": [
       "redhat.vscode-yaml",
-      "ms-azuretools.vscode-docker"
+      "ms-azuretools.vscode-docker",
+      "ms-python.python"
     ]
   }
 }

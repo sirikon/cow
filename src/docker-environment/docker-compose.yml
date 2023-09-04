@@ -1,0 +1,3 @@
+services:
+  cow:
+    image: sirikon/cow:${COW_VERSION}

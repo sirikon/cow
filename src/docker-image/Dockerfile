@@ -15,5 +15,16 @@ RUN sha256sum -c docker-compose.sha256
 RUN chmod +x docker-compose-linux-x86_64
 
 FROM python:3.11-slim-bookworm as release
+WORKDIR /app
+COPY ./src/cow/requirements.txt .
+RUN pip install -r requirements.txt
+COPY ./src/cow/src ./src
+WORKDIR /app/src
+CMD ["flask", "--app", "cow.__main__", "run", "--host", "0.0.0.0", "--port", "80"]
+EXPOSE 80
+
 COPY --from=builder /builder/docker/docker /usr/local/bin/docker
 COPY --from=builder /builder/docker-compose-linux-x86_64 /usr/local/lib/docker/cli-plugins/docker-compose
+
+FROM release AS development
+CMD ["flask", "--app", "cow.__main__", "run", "--host", "0.0.0.0", "--port", "80", "--debug"]
