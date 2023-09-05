@@ -1,7 +1,8 @@
 {
   "name": "Cow",
   "dockerComposeFile": [
-    "../src/docker-environment/docker-compose.yml",
+    "../docker-compose.yml",
+    "../src/docker-environment/docker-compose.base.yml",
     "../src/docker-environment/docker-compose.build.yml",
     "../src/docker-environment/docker-compose.dev-container.yml"
   ],

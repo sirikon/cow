@@ -1,5 +1,5 @@
 services:
   cow:
     build:
-      context: ../../
+      context: ./
       dockerfile: ./src/docker-image/Dockerfile
