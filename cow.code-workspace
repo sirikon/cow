@@ -46,5 +46,28 @@
       "ms-python.python",
       "ms-python.black-formatter"
     ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "python",
+        "name": "Cow",
+        "request": "launch",
+        "module": "flask",
+        "cwd": "${workspaceFolder:Cow}/src",
+        "args": [
+          "--app",
+          "cow.__main__",
+          "run",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "80",
+          "--debug"
+        ],
+        "console": "integratedTerminal"
+      }
+    ]
   }
 }
