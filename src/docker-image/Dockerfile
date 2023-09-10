@@ -28,10 +28,9 @@ FROM base AS vscode-dev-container
 FROM base AS base-for-execution
 WORKDIR /app/src
 EXPOSE 80
+CMD ["python", "-m", "cow"]
 
 FROM base-for-execution AS release
 COPY ./src/cow/src /app/src
-CMD ["flask", "--app", "cow.__main__", "run", "--host", "0.0.0.0", "--port", "80"]
 
 FROM base-for-execution AS development
-CMD ["flask", "--app", "cow.__main__", "run", "--host", "0.0.0.0", "--port", "80", "--debug"]

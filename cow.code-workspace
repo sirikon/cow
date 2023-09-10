@@ -57,18 +57,8 @@
         "type": "python",
         "name": "Cow",
         "request": "launch",
-        "module": "flask",
+        "module": "cow",
         "cwd": "${workspaceFolder:Cow}/src",
-        "args": [
-          "--app",
-          "cow.__main__",
-          "run",
-          "--host",
-          "0.0.0.0",
-          "--port",
-          "80",
-          "--debug"
-        ],
         "console": "integratedTerminal"
       }
     ]
