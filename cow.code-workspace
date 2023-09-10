@@ -55,10 +55,33 @@
     "configurations": [
       {
         "type": "python",
-        "name": "Cow",
+        "name": "Cow with Flask",
         "request": "launch",
-        "module": "cow",
+        "module": "flask",
         "cwd": "${workspaceFolder:Cow}/src",
+        "args": [
+          "--app",
+          "cow.__main__",
+          "run",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "80",
+          "--debug"
+        ],
+        "console": "integratedTerminal"
+      },
+      {
+        "type": "python",
+        "name": "Cow with Gunicorn",
+        "request": "launch",
+        "module": "gunicorn",
+        "cwd": "${workspaceFolder:Cow}/src",
+        "args": [
+          "--bind=0.0.0.0:80",
+          "--workers=1",
+          "cow.__main__:app"
+        ],
         "console": "integratedTerminal"
       }
     ]

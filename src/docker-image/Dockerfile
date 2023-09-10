@@ -25,12 +25,8 @@ COPY --from=docker-downloader /builder/docker-compose-linux-x86_64 /usr/local/li
 
 FROM base AS vscode-dev-container
 
-FROM base AS base-for-execution
+FROM base AS release
 WORKDIR /app/src
-EXPOSE 80
-CMD ["python", "-m", "cow"]
-
-FROM base-for-execution AS release
 COPY ./src/cow/src /app/src
-
-FROM base-for-execution AS development
+CMD ["gunicorn", "--bind=0.0.0.0:80", "--workers=1", "cow.__main__:app"]
+EXPOSE 80
