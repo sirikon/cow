@@ -17,6 +17,9 @@ RUN chmod +x docker-compose-linux-x86_64
 
 
 FROM python:3.11-slim-bookworm as base
+RUN apt-get update && apt-get install -y \
+  git \
+  && rm -rf /var/lib/apt/lists/* 
 COPY ./src/cow/requirements.txt /app/requirements.txt
 RUN pip install -r /app/requirements.txt
 

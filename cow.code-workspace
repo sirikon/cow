@@ -9,6 +9,10 @@
       "path": "./src/cow"
     },
     {
+      "name": "Example",
+      "path": "./src/example"
+    },
+    {
       "name": "Docker Image",
       "path": "./src/docker-image"
     },
