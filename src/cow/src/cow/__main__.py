@@ -29,6 +29,17 @@ async def webhook_handler(project_name: str):
     else:
         run(["git", "clone", project_config.git.repository, git_repository_path])
 
-    run(["docker", "compose", "up", "-d", "--build"], cwd=compose_project_path)
+    run(
+        [
+            "docker",
+            "compose",
+            "--project-name",
+            project_name,
+            "up",
+            "--detach",
+            "--build",
+        ],
+        cwd=compose_project_path,
+    )
 
     return {"ok": True}
