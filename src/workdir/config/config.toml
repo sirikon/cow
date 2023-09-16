@@ -1,3 +1,4 @@
 [projects.hello-world]
-git_repository = "https://gitlab.com/stavros/harbormaster.git"
-path = "/apps/hello_world"
+compose.project_path = "/src/example-compose-project"
+git.repository = "https://github.com/sirikon/cow.git"
+webhook.secret = "secret"

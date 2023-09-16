@@ -13,6 +13,10 @@
       "path": "./src/workdir"
     },
     {
+      "name": "Example Compose Project",
+      "path": "./src/example-compose-project"
+    },
+    {
       "name": "Docker Image",
       "path": "./src/docker-image"
     },
