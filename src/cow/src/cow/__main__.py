@@ -18,7 +18,7 @@ async def webhook_handler(project_name: str):
 
     project_config = config.projects[project_name]
     project_base_path = paths_provider.get_project_base_path(project_name)
-    git_repository_path = join(project_base_path, "git_repository")
+    git_repository_path = join(project_base_path, "git-repository")
     compose_project_path = join(
         git_repository_path, project_config.compose.project_path.lstrip("/")
     )
