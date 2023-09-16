@@ -1,6 +1,5 @@
 from os import makedirs
 from os.path import join, exists
-from pathlib import Path
 from subprocess import run
 
 from cow.di import paths_provider, config_provider
