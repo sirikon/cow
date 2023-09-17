@@ -16,7 +16,8 @@
         "ms-azuretools.vscode-docker",
         "ms-python.python",
         "ms-python.black-formatter",
-        "tamasfe.even-better-toml"
+        "tamasfe.even-better-toml",
+        "humao.rest-client"
       ]
     }
   }

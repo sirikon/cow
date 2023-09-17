@@ -9,6 +9,10 @@
       "path": "./src/cow"
     },
     {
+      "name": "Cow HTTP API",
+      "path": "./src/cow-http-api"
+    },
+    {
       "name": "Workdir",
       "path": "./src/workdir"
     },
