@@ -1,6 +1,7 @@
 from os import makedirs
 from os.path import join, exists
-from subprocess import run
+from subprocess import DEVNULL, PIPE, STDOUT, run
+from typing import Optional
 
 from cow.di import paths_provider, config_provider
 from flask import Flask, abort
@@ -28,13 +29,15 @@ async def webhook_handler(project_name: str):
 
         if exists(git_repository_path):
             yield "## Pulling existing repository\n"
-            run(["git", "pull"], cwd=git_repository_path)
+            yield cmd(["git", "pull"], cwd=git_repository_path)
         else:
             yield "## Cloning new repository\n"
-            run(["git", "clone", project_config.git.repository, git_repository_path])
+            yield cmd(
+                ["git", "clone", project_config.git.repository, git_repository_path]
+            )
 
         yield "## Runnning docker compose\n"
-        result = run(
+        yield cmd(
             [
                 "docker",
                 "compose",
@@ -45,9 +48,12 @@ async def webhook_handler(project_name: str):
                 "--build",
             ],
             cwd=compose_project_path,
-            capture_output=True,
-            text=True,
         )
-        yield result.stdout + result.stderr
+        yield "## Done"
 
     return stream_result(), {"Content-Type": "text/plain;charset=utf8"}
+
+
+def cmd(args: list[str], cwd: Optional[str] = None):
+    result = run(args, cwd=cwd, stderr=STDOUT, stdout=PIPE, stdin=DEVNULL, text=True)
+    return result.stdout
