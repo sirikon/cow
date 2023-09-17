@@ -11,7 +11,7 @@ function main {
 }
 
 function log { (
-  printf "\e[2m▓▒░ %s\e[m\n" "${@}"
+  printf "\e[2m▓▒░ %s\e[m\n" "$@"
 ); }
 
 main
