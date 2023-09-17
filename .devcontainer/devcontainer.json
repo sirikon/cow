@@ -17,7 +17,9 @@
         "ms-python.python",
         "ms-python.black-formatter",
         "tamasfe.even-better-toml",
-        "humao.rest-client"
+        "humao.rest-client",
+        "foxundermoon.shell-format",
+        "timonwong.shellcheck"
       ]
     }
   }
