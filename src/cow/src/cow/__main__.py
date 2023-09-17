@@ -75,5 +75,3 @@ def validate_github_signature(request: Request, secret: str):
     expected_signature = "sha256=" + hash_object.hexdigest()
     if not hmac.compare_digest(expected_signature, signature):
         abort(400)
-
-    print(signature)
