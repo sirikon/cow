@@ -22,23 +22,32 @@ async def webhook_handler(project_name: str):
         git_repository_path, project_config.compose.project_path.lstrip("/")
     )
 
-    makedirs(project_base_path, exist_ok=True)
-    if exists(git_repository_path):
-        run(["git", "pull"], cwd=git_repository_path)
-    else:
-        run(["git", "clone", project_config.git.repository, git_repository_path])
+    def stream_result():
+        yield "## Ensuring project's folder exists\n"
+        makedirs(project_base_path, exist_ok=True)
 
-    run(
-        [
-            "docker",
-            "compose",
-            "--project-name",
-            project_name,
-            "up",
-            "--detach",
-            "--build",
-        ],
-        cwd=compose_project_path,
-    )
+        if exists(git_repository_path):
+            yield "## Pulling existing repository\n"
+            run(["git", "pull"], cwd=git_repository_path)
+        else:
+            yield "## Cloning new repository\n"
+            run(["git", "clone", project_config.git.repository, git_repository_path])
 
-    return {"ok": True}
+        yield "## Runnning docker compose\n"
+        result = run(
+            [
+                "docker",
+                "compose",
+                "--project-name",
+                project_name,
+                "up",
+                "--detach",
+                "--build",
+            ],
+            cwd=compose_project_path,
+            capture_output=True,
+            text=True,
+        )
+        yield result.stdout + result.stderr
+
+    return stream_result(), {"Content-Type": "text/plain;charset=utf8"}
