@@ -3,3 +3,4 @@ services:
     build:
       context: ./
       dockerfile: ./src/docker-image/Dockerfile
+      target: release
