@@ -3,30 +3,46 @@ set -euo pipefail
 cd "$(realpath "$(dirname "${BASH_SOURCE[0]}")/../..")"
 
 function main {
-  COW_VERSION="$(sed 's/[ \n]//g' <VERSION)"
-  COW_COMMIT="$(git rev-parse --verify HEAD)"
-  export COW_VERSION
-  export COW_COMMIT
+  version="$(sed 's/[ \n]//g' <VERSION)"
+  commit="$(git rev-parse --verify HEAD)"
 
-  export COW_IMAGE="sirikon/cow:${COW_VERSION}-${COW_COMMIT}"
+  cow_image_base="sirikon/cow"
+  cow_image_version_and_commit="${cow_image_base}:${version}-${commit}"
+  cow_image_version_only="${cow_image_base}:${version}"
+  cow_image_latest="${cow_image_base}:latest"
+
+  export COW_IMAGE="${cow_image_version_and_commit}"
 
   log "Publishing Cow" \
-    "  version: ${COW_VERSION}" \
-    "   commit: ${COW_COMMIT}"
+    "  version: ${version}" \
+    "   commit: ${commit}" \
+    "   images:" \
+    "       ${cow_image_version_and_commit}" \
+    "       ${cow_image_version_only}" \
+    "       ${cow_image_latest}"
 
   log "Building"
   docker compose \
     -f ./docker-compose.yml \
     -f ./src/docker-environment/docker-compose.base.yml \
     -f ./src/docker-environment/docker-compose.build.yml \
+    -f ./src/docker-environment/docker-compose.publish.yml \
     build
-  
-  log "Pushing"
-  docker push "${COW_IMAGE}"
+
+  if [ "${1:-}" = "confirm" ]; then
+    log "Pushing"
+    docker tag "${cow_image_version_and_commit}" "${cow_image_version_only}"
+    docker tag "${cow_image_version_and_commit}" "${cow_image_latest}"
+    docker push "${cow_image_version_and_commit}"
+    docker push "${cow_image_version_only}"
+    docker push "${cow_image_latest}"
+  else
+    echo "Run again the publish script with 'confirm' argument to finally push."
+  fi
 }
 
 function log { (
   printf "\e[2m▓▒░ %s\e[m\n" "$@"
 ); }
 
-main
+main "$@"
