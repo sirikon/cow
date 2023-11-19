@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "cow"
+version = "0.0.0"
+description = ""
+authors = ["Carlos Fdez. Llamas <hello@sirikon.me>"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+flask = { version = "2.3.3", extras = ["async"] }
+pydantic = "2.3.0"
+gunicorn = "21.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

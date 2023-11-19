@@ -54,6 +54,9 @@
       "editor.defaultFormatter": "ms-python.black-formatter",
       "editor.tabSize": 4,
     },
+    "[toml]": {
+      "editor.tabSize": 4,
+    },
     "files.exclude": {
       "**/__pycache__": true
     }

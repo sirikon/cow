@@ -18,10 +18,16 @@ RUN chmod +x docker-compose-linux-x86_64
 
 FROM python:3.11-slim-bookworm as base
 RUN apt-get update && apt-get install -y \
-  git \
-  && rm -rf /var/lib/apt/lists/* 
-COPY ./src/cow/requirements.txt /app/requirements.txt
-RUN pip install -r /app/requirements.txt
+  git curl \
+  && rm -rf /var/lib/apt/lists/*
+ENV POETRY_VERSION 1.7.1
+ENV POETRY_HOME /poetry
+ENV PATH="/poetry/bin:${PATH}"
+RUN curl -sSL https://install.python-poetry.org | python -
+RUN poetry config virtualenvs.create false 
+COPY ./src/cow/pyproject.toml /app/pyproject.toml
+COPY ./src/cow/poetry.lock /app/poetry.lock
+RUN cd /app && poetry install --no-root --no-interaction
 
 COPY --from=docker-downloader /builder/docker/docker /usr/local/bin/docker
 COPY --from=docker-downloader /builder/docker-compose-linux-x86_64 /usr/local/lib/docker/cli-plugins/docker-compose
