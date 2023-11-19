@@ -1,11 +1,17 @@
+# All the following shit can be ignored completely because
+# it's here just so Poetry doesn't complain.
+# https://github.com/python-poetry/poetry/issues/1132
 [tool.poetry]
-name = "cow"
-version = "0.0.0"
-description = ""
-authors = ["Carlos Fdez. Llamas <hello@sirikon.me>"]
+name = "cow"                                         # ignore this
+version = "0.0.0"                                    # ignore this
+description = ""                                     # ignore this
+authors = ["Carlos Fdez. Llamas <hello@sirikon.me>"] # ignore this
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.11" # ignore this
+# Unnecessary shit is over!
+
+
 flask = { version = "2.3.3", extras = ["async"] }
 pydantic = "2.3.0"
 gunicorn = "21.2.0"
