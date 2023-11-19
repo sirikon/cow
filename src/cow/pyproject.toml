@@ -9,7 +9,3 @@ python = "^3.11"
 flask = { version = "2.3.3", extras = ["async"] }
 pydantic = "2.3.0"
 gunicorn = "21.2.0"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
