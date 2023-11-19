@@ -1,6 +1,7 @@
 import hashlib
 import hmac
-from os import makedirs
+import json
+from os import makedirs, environ
 from os.path import join, exists
 from subprocess import DEVNULL, PIPE, STDOUT, run
 from typing import Optional
@@ -53,14 +54,25 @@ async def webhook_handler(project_name: str):
                 "--build",
             ],
             cwd=compose_project_path,
+            env=dict(
+                environ,
+                COW_PROJECT_PATH=join(
+                    get_projects_base_path(),
+                    project_name,
+                    "git-repository",
+                    project_config.compose.project_path.lstrip("/"),
+                ),
+            ),
         )
         yield "## Done"
 
     return stream_result(), {"Content-Type": "text/plain;charset=utf8"}
 
 
-def cmd(args: list[str], cwd: Optional[str] = None):
-    result = run(args, cwd=cwd, stderr=STDOUT, stdout=PIPE, stdin=DEVNULL, text=True)
+def cmd(args: list[str], cwd: Optional[str] = None, **kwargs):
+    result = run(
+        args, cwd=cwd, stderr=STDOUT, stdout=PIPE, stdin=DEVNULL, text=True, **kwargs
+    )
     return result.stdout
 
 
@@ -75,3 +87,12 @@ def validate_github_signature(request: Request, secret: str):
     expected_signature = "sha256=" + hash_object.hexdigest()
     if not hmac.compare_digest(expected_signature, signature):
         abort(400)
+
+
+def get_projects_base_path():
+    data = json.loads(cmd(["bash", "-c", 'docker inspect "$HOSTNAME"']))
+    for mount in data[0]["Mounts"]:
+        if mount["Destination"] == "/projects":
+            return mount["Source"]
+
+    raise Exception("Could not find the projects base path")
