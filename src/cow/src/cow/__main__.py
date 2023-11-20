@@ -6,7 +6,7 @@ from os.path import join, exists
 from subprocess import DEVNULL, PIPE, STDOUT, run
 from typing import Optional
 
-from cow.di import paths_provider, config_provider
+from cow.di import paths_provider, config_provider, docker_introspection
 from flask import Flask, Request, abort, request
 
 app = Flask(__name__)
@@ -90,9 +90,8 @@ def validate_github_signature(request: Request, secret: str):
 
 
 def get_projects_base_path():
-    data = json.loads(cmd(["bash", "-c", 'docker inspect "$HOSTNAME"']))
-    for mount in data[0]["Mounts"]:
-        if mount["Destination"] == "/projects":
-            return mount["Source"]
+    for mount in docker_introspection.get_mounts():
+        if mount.destination == "/projects":
+            return mount.source
 
     raise Exception("Could not find the projects base path")

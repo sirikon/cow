@@ -1,5 +1,12 @@
+from dataclasses import dataclass
 import json
 from cow.host import Host
+
+
+@dataclass
+class DockerMount:
+    source: str
+    destination: str
 
 
 class DockerInstrospection:
@@ -8,4 +15,9 @@ class DockerInstrospection:
 
     def get_mounts(self):
         data = json.loads(self._host.run(["bash", "-c", 'docker inspect "$HOSTNAME"']))
-        return data[0]["Mounts"]
+        if len(data) == 0:
+            return []
+
+        return list(
+            DockerMount(m["Source"], m["Destination"]) for m in data[0]["Mounts"]
+        )
