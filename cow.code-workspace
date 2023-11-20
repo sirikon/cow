@@ -36,6 +36,7 @@
   "settings": {
     "editor.detectIndentation": false,
     "editor.tabSize": 2,
+    "python.defaultInterpreterPath": "/usr/local/bin/python",
     "[json]": {
       "editor.defaultFormatter": "vscode.json-language-features",
       "files.insertFinalNewline": true
@@ -58,7 +59,8 @@
       "editor.tabSize": 4,
     },
     "files.exclude": {
-      "**/__pycache__": true
+      "**/__pycache__": true,
+      "**/.pytest_cache": true
     }
   },
   "extensions": {

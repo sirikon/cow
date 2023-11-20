@@ -15,3 +15,6 @@ python = "^3.11" # ignore this
 flask = { version = "2.3.3", extras = ["async"] }
 pydantic = "2.3.0"
 gunicorn = "21.2.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "7.4.3"
