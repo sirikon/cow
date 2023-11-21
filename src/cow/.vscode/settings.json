@@ -1,6 +1,7 @@
 {
   "python.testing.pytestArgs": [
-    "src/cow"
+    "--import-mode=importlib",
+    "src"
   ],
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true

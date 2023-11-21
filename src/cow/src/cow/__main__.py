@@ -1,6 +1,5 @@
 import hashlib
 import hmac
-import json
 from os import makedirs, environ
 from os.path import join, exists
 from subprocess import DEVNULL, PIPE, STDOUT, run
