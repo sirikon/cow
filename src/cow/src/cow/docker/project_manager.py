@@ -1,6 +1,5 @@
 from os import environ, makedirs
 from os.path import join, exists
-from typing import Generator
 
 from cow.config import ConfigProvider, ProjectConfig
 from cow.docker.introspection import DockerInstrospection
