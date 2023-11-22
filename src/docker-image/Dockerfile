@@ -37,5 +37,5 @@ FROM base AS vscode-dev-container
 FROM base AS release
 WORKDIR /app/src
 COPY ./src/cow/src /app/src
-CMD ["gunicorn", "--bind=0.0.0.0:80", "--workers=1", "cow.__main__:app"]
+CMD ["python", "-m", "cow"]
 EXPOSE 80
