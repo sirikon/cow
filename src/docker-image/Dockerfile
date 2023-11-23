@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim AS docker-downloader
+FROM debian:bookworm-slim AS binaries-downloader
 WORKDIR /builder
 RUN apt-get update && apt-get install -y wget
 # Download Docker
@@ -11,13 +11,18 @@ RUN echo "f45e4cb687df8b48a57f656097ce7175fa8e8bef70be407b011e29ff663f475f  dock
 RUN wget https://github.com/docker/compose/releases/download/v2.20.3/docker-compose-linux-x86_64
 RUN sha256sum -c docker-compose.sha256
 RUN chmod +x docker-compose-linux-x86_64
+# Download tini
+ENV TINI_VERSION v0.19.0
+RUN wget --no-check-certificate --no-cookies --quiet https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-amd64 \
+  && wget --no-check-certificate --no-cookies --quiet https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-amd64.sha256sum \
+  && echo "$(cat tini-amd64.sha256sum)" | sha256sum -c
 
 
 
 FROM python:3.11-slim-bookworm as base
 WORKDIR /app
 RUN apt-get update && apt-get install -y \
-  git \
+  git procps \
   && rm -rf /var/lib/apt/lists/*
 # Install Poetry
 ENV POETRY_VERSION 1.7.1
@@ -30,9 +35,10 @@ RUN poetry config virtualenvs.create false
 COPY ./src/cow/pyproject.toml /app/pyproject.toml
 COPY ./src/cow/poetry.lock /app/poetry.lock
 RUN poetry install --no-root --no-interaction --without dev
-# Copy Docker artifacts
-COPY --from=docker-downloader /builder/docker/docker /usr/local/bin/docker
-COPY --from=docker-downloader /builder/docker-compose-linux-x86_64 /usr/local/lib/docker/cli-plugins/docker-compose
+# Copy builder artifacts
+COPY --from=binaries-downloader /builder/docker/docker /usr/local/bin/docker
+COPY --from=binaries-downloader /builder/docker-compose-linux-x86_64 /usr/local/lib/docker/cli-plugins/docker-compose
+COPY --from=binaries-downloader /builder/tini-amd64 /usr/local/bin/tini
 
 
 
@@ -45,5 +51,6 @@ RUN poetry install --no-root --no-interaction
 FROM base AS release
 WORKDIR /app/src
 COPY ./src/cow/src /app/src
+ENTRYPOINT ["/tini", "--"]
 CMD ["python", "-m", "cow"]
 EXPOSE 80
