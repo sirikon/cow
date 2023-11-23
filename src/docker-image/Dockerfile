@@ -16,7 +16,7 @@ ENV TINI_VERSION v0.19.0
 RUN wget --no-check-certificate --no-cookies --quiet https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-amd64 \
   && wget --no-check-certificate --no-cookies --quiet https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-amd64.sha256sum \
   && echo "$(cat tini-amd64.sha256sum)" | sha256sum -c
-
+RUN chmod +x ./tini-amd64
 
 
 FROM python:3.11-slim-bookworm as base
@@ -38,7 +38,7 @@ RUN poetry install --no-root --no-interaction --without dev
 # Copy builder artifacts
 COPY --from=binaries-downloader /builder/docker/docker /usr/local/bin/docker
 COPY --from=binaries-downloader /builder/docker-compose-linux-x86_64 /usr/local/lib/docker/cli-plugins/docker-compose
-COPY --from=binaries-downloader /builder/tini-amd64 /usr/local/bin/tini
+COPY --from=binaries-downloader /builder/tini-amd64 /tini
 
 
 
