@@ -18,5 +18,5 @@ def worker(q: multiprocessing.Queue):
 
 
 def spawn_worker():
-    p = ctx.Process(target=worker, args=(project_refresh_queue,))
+    p = ctx.Process(target=worker, args=(project_refresh_queue,), daemon=True)
     p.start()
