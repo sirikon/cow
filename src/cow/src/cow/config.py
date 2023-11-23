@@ -31,7 +31,6 @@ class ConfigProvider:
         self._paths_provider = paths_provider
 
     def get_config(self) -> Config:
-        config_path = self._paths_provider.get_config_path()
-        with open(config_path, "rb") as f:
+        with open(self._paths_provider.config, "rb") as f:
             raw_config = tomllib.load(f)
         return Config(**raw_config)

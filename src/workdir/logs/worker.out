@@ -1,0 +1,11 @@
+================== Started worker. PID: 3869
+================== Waiting for projects to refresh
+================== Refreshing: hello-world
+## Ensuring project's folder exists
+## Pulling existing repository
+Already up to date.
+## Runnning docker compose
+ Container hello-world-web-1  Running
+## Done
+================== Refresh done
+================== Waiting for projects to refresh

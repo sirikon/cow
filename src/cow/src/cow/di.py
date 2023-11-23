@@ -10,5 +10,5 @@ config_provider = ConfigProvider(paths_provider)
 host = Host()
 docker_introspection = DockerInstrospection(host)
 docker_project_manager = DockerProjectManager(
-    host, config_provider, docker_introspection
+    host, config_provider, docker_introspection, paths_provider
 )

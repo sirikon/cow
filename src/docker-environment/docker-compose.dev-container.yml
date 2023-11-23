@@ -6,6 +6,5 @@ services:
       - 127.0.0.1:8000:80
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./src/workdir/config:/config:ro
-      - ./src/workdir/projects:/projects
+      - ./src/workdir:/cow
       - ./:/workspace

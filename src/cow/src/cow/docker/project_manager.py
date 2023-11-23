@@ -4,6 +4,7 @@ from os.path import join, exists
 from cow.config import ConfigProvider, ProjectConfig
 from cow.docker.introspection import DockerInstrospection
 from cow.host import Host
+from cow.paths import PathsProvider
 
 
 class ProjectPaths:
@@ -35,14 +36,18 @@ class DockerProjectManager:
         host: Host,
         config_provider: ConfigProvider,
         docker_introspection: DockerInstrospection,
+        paths_provider: PathsProvider,
     ) -> None:
         self._host = host
         self._config_provider = config_provider
         self._docker_introspection = docker_introspection
+        self._paths_provider = paths_provider
 
     def refresh(self, project_name: str):
         project_config = self.must_get_project_config(project_name)
-        project_paths = ProjectPaths("/projects", project_name, project_config)
+        project_paths = ProjectPaths(
+            self._paths_provider.projects, project_name, project_config
+        )
         project_mounted_paths = ProjectPaths(
             self.get_projects_mounted_path(), project_name, project_config
         )
@@ -92,7 +97,7 @@ class DockerProjectManager:
 
     def get_projects_mounted_path(self):
         for mount in self._docker_introspection.get_mounts():
-            if mount.destination == "/projects":
-                return mount.source
+            if mount.destination == "/cow":
+                return join(mount.source, "projects")
 
         raise Exception("Could not find the mounted projects path")

@@ -15,6 +15,7 @@ app = Flask(__name__)
 
 @app.post("/webhook/<project_name>")
 async def webhook_handler(project_name: str):
+    print("Entering webhook!")
     config = config_provider.get_config()
     if project_name not in config.projects.keys():
         abort(404)
