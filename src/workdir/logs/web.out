@@ -1,9 +1,0 @@
-================== Started web. PID: 3865
-[2023-11-23 21:55:16 +0000] [3865] [INFO] Starting gunicorn 21.2.0
-[2023-11-23 21:55:16 +0000] [3865] [INFO] Listening at: http://0.0.0.0:80 (3865)
-[2023-11-23 21:55:16 +0000] [3865] [INFO] Using worker: sync
-[2023-11-23 21:55:16 +0000] [3870] [INFO] Booting worker with pid: 3870
-Entering webhook!
-[2023-11-23 21:56:02 +0000] [3865] [INFO] Handling signal: int
-[2023-11-23 21:56:02 +0000] [3870] [INFO] Worker exiting (pid: 3870)
-[2023-11-23 21:56:02 +0000] [3865] [INFO] Shutting down: Master
