@@ -94,6 +94,8 @@ class DockerProjectManager:
                 "compose",
                 "--project-name",
                 project_name,
+                "--project-directory",
+                project_paths.compose_project,
                 *compose_files_args,
                 "up",
                 "--detach",
