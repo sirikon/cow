@@ -4,7 +4,5 @@ services:
     restart: always
     volumes:
       - ${COW_PROJECT_PATH}/html:/var/www/html:ro
-    environment:
-      - MESSAGE=${MESSAGE}
     ports:
     - "9000:80"
