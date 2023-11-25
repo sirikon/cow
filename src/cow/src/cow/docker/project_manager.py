@@ -69,6 +69,24 @@ class DockerProjectManager:
                 ]
             )
 
+        compose_files_args = (
+            sum(
+                list(
+                    ["--file", join(project_paths.compose_project, f)]
+                    for f in project_config.compose.compose_files
+                ),
+                [],
+            )
+            if project_config.compose.compose_files is not None
+            else []
+        )
+
+        compose_environment_variables = (
+            project_config.compose.environment
+            if project_config.compose.environment is not None
+            else {}
+        )
+
         yield "## Runnning docker compose\n"
         yield self._host.run(
             [
@@ -76,6 +94,7 @@ class DockerProjectManager:
                 "compose",
                 "--project-name",
                 project_name,
+                *compose_files_args,
                 "up",
                 "--detach",
                 "--build",
@@ -83,6 +102,7 @@ class DockerProjectManager:
             cwd=project_paths.compose_project,
             env=dict(
                 environ,
+                **compose_environment_variables,
                 COW_PROJECT_PATH=project_mounted_paths.compose_project,
             ),
         )

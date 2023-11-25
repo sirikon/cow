@@ -1,4 +1,5 @@
 import tomllib
+from typing import Optional
 
 from pydantic import BaseModel
 from cow.paths import PathsProvider
@@ -6,6 +7,8 @@ from cow.paths import PathsProvider
 
 class ProjectComposeConfig(BaseModel):
     project_path: str
+    compose_files: Optional[list[str]]
+    environment: Optional[dict[str, str]]
 
 
 class ProjectGitConfig(BaseModel):

@@ -1,4 +1,7 @@
 [projects.hello-world]
-compose.project_path = "/src/example-compose-project"
 git.repository = "https://github.com/sirikon/cow.git"
 webhook.secret = "secret"
+compose.project_path = "/src/example-compose-project"
+compose.compose_files = ["docker-compose.yml", "docker-compose.extra.yml"]
+[projects.hello-world.compose.environment]
+MESSAGE = "Hello! Cow seems to be working!"
