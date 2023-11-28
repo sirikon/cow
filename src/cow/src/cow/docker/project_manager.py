@@ -1,5 +1,5 @@
 from os import environ, makedirs
-from os.path import join, exists
+from os.path import join, isfile, isdir
 
 from cow.config import ConfigProvider, ProjectConfig
 from cow.docker.introspection import DockerInstrospection
@@ -22,6 +22,10 @@ class ProjectPaths:
     @property
     def git_repository(self):
         return join(self.base, "git-repository")
+
+    @property
+    def git_ssh_key(self):
+        return join(self.base, "ssh.key")
 
     @property
     def compose_project(self):
@@ -55,9 +59,24 @@ class DockerProjectManager:
         yield "## Ensuring project's folder exists\n"
         makedirs(project_paths.base, exist_ok=True)
 
-        if exists(project_paths.git_repository):
+        git_clone_environment_variables = (
+            {
+                "GIT_SSH_COMMAND": f"ssh -i '{project_paths.git_ssh_key}' -o IdentitiesOnly=yes"
+            }
+            if isfile(project_paths.git_ssh_key)
+            else {}
+        )
+
+        if isdir(project_paths.git_repository):
             yield "## Pulling existing repository\n"
-            yield self._host.run(["git", "pull"], cwd=project_paths.git_repository)
+            yield self._host.run(
+                ["git", "pull"],
+                cwd=project_paths.git_repository,
+                env=dict(
+                    environ,
+                    **git_clone_environment_variables,
+                ),
+            )
         else:
             yield "## Cloning new repository\n"
             yield self._host.run(
@@ -66,7 +85,11 @@ class DockerProjectManager:
                     "clone",
                     project_config.git.repository,
                     project_paths.git_repository,
-                ]
+                ],
+                env=dict(
+                    environ,
+                    **git_clone_environment_variables,
+                ),
             )
 
         compose_files_args = (
