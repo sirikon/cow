@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from subprocess import PIPE
 import json
 from cow.host import Host
 
@@ -14,7 +15,11 @@ class DockerInstrospection:
         self._host = host
 
     def get_mounts(self):
-        data = json.loads(self._host.run(["bash", "-c", 'docker inspect "$HOSTNAME"']))
+        data = json.loads(
+            self._host.run(
+                ["bash", "-c", 'docker inspect "$HOSTNAME"'], stdout=PIPE, text=True
+            ).stdout
+        )
         if len(data) == 0:
             return []
 

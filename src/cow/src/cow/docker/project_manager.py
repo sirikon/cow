@@ -56,7 +56,7 @@ class DockerProjectManager:
             self.get_projects_mounted_path(), project_name, project_config
         )
 
-        yield "## Ensuring project's folder exists\n"
+        print("## Ensuring project's folder exists")
         makedirs(project_paths.base, exist_ok=True)
 
         git_clone_environment_variables = (
@@ -68,8 +68,8 @@ class DockerProjectManager:
         )
 
         if isdir(project_paths.git_repository):
-            yield "## Pulling existing repository\n"
-            yield self._host.run(
+            print("## Pulling existing repository")
+            self._host.run(
                 ["git", "pull"],
                 cwd=project_paths.git_repository,
                 env=dict(
@@ -78,8 +78,8 @@ class DockerProjectManager:
                 ),
             )
         else:
-            yield "## Cloning new repository\n"
-            yield self._host.run(
+            print("## Cloning new repository")
+            self._host.run(
                 [
                     "git",
                     "clone",
@@ -91,6 +91,8 @@ class DockerProjectManager:
                     **git_clone_environment_variables,
                 ),
             )
+
+        self._host.run(["bash", "-c", "echo hehe && exit 1"])
 
         compose_files_args = (
             sum(
@@ -110,8 +112,8 @@ class DockerProjectManager:
             else {}
         )
 
-        yield "## Runnning docker compose\n"
-        yield self._host.run(
+        print("## Runnning docker compose")
+        self._host.run(
             [
                 "docker",
                 "compose",
@@ -131,7 +133,7 @@ class DockerProjectManager:
                 COW_PROJECT_PATH=project_mounted_paths.compose_project,
             ),
         )
-        yield "## Done"
+        print("## Done")
 
     def must_get_project_config(self, project_name: str) -> ProjectConfig:
         config = self._config_provider.get_config()

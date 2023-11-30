@@ -7,7 +7,7 @@ from cow.paths import PathsProvider
 
 paths_provider = PathsProvider()
 config_provider = ConfigProvider(paths_provider)
-host = Host()
+host = Host(paths_provider)
 docker_introspection = DockerInstrospection(host)
 docker_project_manager = DockerProjectManager(
     host, config_provider, docker_introspection, paths_provider

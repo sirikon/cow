@@ -17,3 +17,11 @@ class PathsProvider:
     @property
     def logs(self) -> str:
         return join(self.base, "logs")
+
+    @property
+    def worker_logs(self) -> str:
+        return join(self.logs, "worker.out")
+
+    @property
+    def web_logs(self) -> str:
+        return join(self.logs, "web.out")

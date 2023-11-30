@@ -31,8 +31,7 @@ class GunicornApplication(BaseApplication):
 def start_web():
     pid = str(getpid())
     makedirs(paths_provider.logs, exist_ok=True)
-    log_path = join(paths_provider.logs, f"web.out")
-    with open(log_path, "w", buffering=1) as output:
+    with open(paths_provider.web_logs, "a", buffering=1) as output:
         with redirect_stdout(output):
             with redirect_stderr(output):
                 print(f"================== Started web. PID: {pid}")
